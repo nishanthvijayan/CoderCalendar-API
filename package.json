@@ -1,0 +1,24 @@
+{
+  "name": "programming-contests-api",
+  "version": "1.0.0",
+  "description": "An API listing programming contests across multiple platforms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node codeforces.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nishanthvijayan/programming-contests-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nishanthvijayan/programming-contests-api/issues"
+  },
+  "homepage": "https://github.com/nishanthvijayan/programming-contests-api#readme",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "cheerio": "^1.0.0-rc.2"
+  }
+}
