@@ -4,8 +4,8 @@
   "description": "An API listing programming contests across multiple platforms",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node codeforces.js"
+    "start": "SET NODE_ENV=dev && node server.js",
+    "test": "mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,10 @@
     "axios": "^0.16.2",
     "cheerio": "^1.0.0-rc.2",
     "memory-cache": "^0.2.0"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.4.2"
   }
 }
