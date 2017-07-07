@@ -3,10 +3,11 @@ var codeforces = require("./parsers/codeforces");
 var hackerearth = require("./parsers/hackerearth");
 var hackerrank = require("./parsers/hackerrank");
 var topcoder = require("./parsers/topcoder");
+var leetcode = require("./parsers/leetcode");
 // var codechef = require("./parsers/codechef");
 
 var aggregate = function(){
-	return axios.all([codeforces(), hackerearth(), hackerrank('college'), hackerrank('upcoming'), topcoder()])
+	return axios.all([codeforces(), hackerearth(), hackerrank('college'), hackerrank('upcoming'), topcoder(), leetcode()])
 		.then(function(contests_by_platform){
 			var contests = [].concat.apply([], contests_by_platform);
 	        
