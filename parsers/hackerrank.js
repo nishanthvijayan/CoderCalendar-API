@@ -20,7 +20,6 @@ var hackerrank = function(type){
                             }
                         });
 
-                    console.log("Hackerrank (" + type + ") fetched successfully!");
                     return contests;
                 })
                 .catch(function(error){

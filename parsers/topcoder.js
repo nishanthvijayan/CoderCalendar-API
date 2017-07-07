@@ -23,7 +23,6 @@ var topcoder = function(){
                             }
                         });
 
-                    console.log("Topcoder fetched successfully!");
                     return contests;
                 })
                 .catch(function(error){

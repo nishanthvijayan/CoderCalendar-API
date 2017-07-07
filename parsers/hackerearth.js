@@ -17,7 +17,6 @@ var hackerearth = function(){
                             }
                         });
 
-                    console.log("Hackerearth fetched successfully!");
                     return contests;
                 })
                 .catch(function(error){

@@ -16,7 +16,6 @@ var codeforces = function(){
                                 "duration": contest.durationSeconds,
                             }
                         });
-                    console.log("Codeforces fetched successfully!");
                     return contests;
                 })
                 .catch(function(error){
