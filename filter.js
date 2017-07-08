@@ -1,20 +1,23 @@
 var filter = function(contests, options){
+	var filteredContests = contests;
 	if(options.platform){
-		contests.ongoing = contests.ongoing.filter(function(contest){
-			return contest.platform == options.platform;
-		});
-		contests.upcoming = contests.upcoming.filter(function(contest){
-			return contest.platform == options.platform;
-		});
+		filteredContests = {
+			"ongoing": contests.ongoing.filter((contest) => {
+					return contest.platform == options.platform;
+				}),
+			"upcoming": contests.upcoming.filter((contest) => {
+					return contest.platform == options.platform;
+				})
+		};
 	}
 
 	if(options.status == "ongoing"){
-		contests = contests.ongoing;
+		filteredContests = filteredContests.ongoing;
 	}else if(options.status == "upcoming"){
-		contests = contests.upcoming;
+		filteredContests = filteredContests.upcoming;
 	}
 
-	return contests;
+	return filteredContests;
 };
 
 module.exports = filter;

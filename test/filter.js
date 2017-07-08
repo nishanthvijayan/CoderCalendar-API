@@ -11,7 +11,7 @@ describe('filter', () => {
             var platform = "hackerearth";
             chai.request(server).get('/').query({'platform': platform}).end((err, res) => {
                 if(err){
-                    console.log(err.toString());
+                    console.error(err.toString());
                     done();
                 }
                 var contests = res.body.results;
@@ -31,16 +31,35 @@ describe('filter', () => {
         it('should show only ongoing contests when status=ongoing', (done) => {
             // TODO: Improve this
             chai.request(server).get('/').query({'status': 'ongoing'}).end((err, res) => {
-                contests = res.body.results;
-                contests.should.be.an('array').not.empty
+                if(err){
+                    console.error(err.toString());
+                    done();
+                }
+                var contests = res.body.results;
+                var cur_time = new Date().getTime()/1000;
+
+                // remove all contests that are ongoing. The result should be empty.
+                contests.filter(function(contest){
+                    return (contest.start_time > cur_time ||
+                        (contest.start_time + contest.duration) < cur_time);
+                }).should.be.an('array').that.is.empty;
                 done();
             });
         });
         it('should show only upcoming contests when status=upcoming', (done) => {
             // TODO: Improve this
             chai.request(server).get('/').query({'status': 'upcoming'}).end((err, res) => {
-                contests = res.body.results;
-                contests.should.be.an('array').not.empty
+                if(err){
+                    console.error(err.toString());
+                    done();
+                }
+                var contests = res.body.results;
+                var cur_time = new Date().getTime()/1000;
+
+                // remove all contests that are upcoming. The result should be empty.
+                contests.filter(function(contest){
+                    return (contest.start_time < cur_time);
+                }).should.be.an('array').that.is.empty;
                 done();
             });
         });
