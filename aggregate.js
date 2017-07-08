@@ -12,7 +12,7 @@ var aggregate = function(){
 			var contests = [].concat.apply([], contests_by_platform);
 	        
 	        // remove contests that are over
-	        var contests = contests.filter(function(contest){
+	        contests = contests.filter(function(contest){
     	    	return (contest.end_time > new Date().getTime()/1000);
         	});
 

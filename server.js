@@ -7,10 +7,17 @@ var filter = require('./filter');
 var cacheTTL = 15 * 60 * 1000;
 
 var server = http.createServer(function(req, res){
-    var params = url.parse(req.url, true).query;
+    var url_parts = url.parse(req.url, true);
+
+    if(url_parts.pathname != '/'){
+        res.writeHead(404);
+        res.end();
+        return;
+    }
+
     var options = {
-        platform: params.platform || null,
-        status: params.status || null
+        platform: url_parts.query.platform || null,
+        status: url_parts.query.status || null
     };
 
     var cachedResults = cache.get('results');
