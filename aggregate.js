@@ -5,9 +5,19 @@ var hackerrank = require("./parsers/hackerrank");
 var topcoder = require("./parsers/topcoder");
 var leetcode = require("./parsers/leetcode");
 var codechef = require("./parsers/codechef");
+var atcoder = require("./parsers/atcoder");
 
 var aggregate = function(){
-	return axios.all([codeforces(), hackerearth(), hackerrank('college'), hackerrank('upcoming'), topcoder(), leetcode(), codechef()])
+	return axios.all([
+			codeforces(),
+			hackerearth(),
+			hackerrank('college'),
+			hackerrank('upcoming'),
+			topcoder(),
+			leetcode(),
+			codechef(),
+			atcoder()
+		])
 		.then(function(contests_by_platform){
 			var contests = [].concat.apply([], contests_by_platform);
 	        
