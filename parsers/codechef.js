@@ -12,16 +12,16 @@ function parseContestDetails($, contest_row){
             "start_time": start_time,
             "end_time": end_time,
             "duration": (end_time - start_time),
-        }
+        };
 }
 
 var codechef = function(){
     return axios.get("http://www.codechef.com/contests", {timeout: 30000})
                 .then(function(response){
                     var $ = cheerio.load(response.data);
-                    var statusdiv = $("table .dataTable")
-                    var headings = $("h3")
-                    var contest_tables = {"Future Contests": [], "Present Contests": []}
+                    var statusdiv = $("table .dataTable");
+                    var headings = $("h3");
+                    var contest_tables = {"Future Contests": [], "Present Contests": []};
                     for (var i = 0; i < headings.length; i++) {
                         if(headings.eq(i).text() != "Past Contests"){
                             contest_tables[headings.eq(i).text()] = statusdiv.eq(i).find("tr").slice(1);

@@ -9,7 +9,7 @@ var contest_url = function(name){
         return "http://abc" + name.slice(-3) + ".contest.atcoder.jp/";
     }
     return "https://atcoder.jp/contest";
-}
+};
 
 var atcoder = function(){
     return axios.get("https://clients6.google.com/calendar/v3/calendars/atcoder.jp_evjr135c62bddnpd26lotmdicg@group.calendar.google.com/events?calendarId=atcoder.jp_evjr135c62bddnpd26lotmdicg%40group.calendar.google.com&timeMin=2017-06-25T00%3A00%3A00%2B09%3A00&key=AIzaSyBNlYH01_9Hc5S1J9vuFmu2nUqBZJNAXxs", {timeout: 15000})
@@ -28,7 +28,7 @@ var atcoder = function(){
                                 // so assume duration 2hrs as they tend to be in Atcoder
                                 "end_time": start_time + (2 * 60* 60),
                                 "duration": (2 * 60* 60),
-                            }
+                            };
                         });
 
                     return contests;

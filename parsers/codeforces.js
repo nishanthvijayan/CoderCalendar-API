@@ -5,7 +5,7 @@ var codeforces = function(){
                 .then(function(response){
                     contests = response.data.result
                         .filter(function(contest){
-                            return contest.phase.trim() != 'FINISHED'
+                            return contest.phase.trim() != 'FINISHED';
                         }).map(function(contest){
                             return {
                                 "name": contest.name,
@@ -14,7 +14,7 @@ var codeforces = function(){
                                 "start_time": contest.startTimeSeconds,
                                 "end_time": (contest.startTimeSeconds + contest.durationSeconds),
                                 "duration": contest.durationSeconds,
-                            }
+                            };
                         });
                     return contests;
                 })

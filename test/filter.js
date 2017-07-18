@@ -1,3 +1,5 @@
+/*jshint expr: true*/
+
 process.env.NODE_ENV = 'test';
 var chai = require('chai');
 var chaiHttp = require('chai-http');

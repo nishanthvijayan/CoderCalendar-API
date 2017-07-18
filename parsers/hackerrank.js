@@ -17,7 +17,7 @@ var hackerrank = function(type){
                                 "start_time": start_time,
                                 "end_time": end_time,
                                 "duration": (end_time - start_time),
-                            }
+                            };
                         });
 
                     return contests;

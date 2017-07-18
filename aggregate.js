@@ -39,7 +39,7 @@ var aggregate = function(){
 	        return {
 	        	"ongoing": ongoing_contests,
 	        	"upcoming": upcoming_contests
-	        }
+	        };
 		});
 };
 
