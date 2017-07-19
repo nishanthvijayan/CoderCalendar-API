@@ -12,8 +12,7 @@ var aggregate = function(){
 	return axios.all([
 			codeforces(),
 			hackerearth(),
-			hackerrank('college'),
-			hackerrank('upcoming'),
+			hackerrank(),
 			topcoder(),
 			leetcode(),
 			codechef(),
