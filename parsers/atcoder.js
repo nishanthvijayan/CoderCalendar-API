@@ -1,37 +1,55 @@
 var axios = require("axios");
+var cheerio = require("cheerio");
 
-var contest_url = function(name){
-    if(name.indexOf("AtCoder Grand Contest") != -1){
-        return "http://agc" + name.slice(-3) + ".contest.atcoder.jp/";
-    }else if(name.indexOf("AtCoder Regular Contest") != -1){
-        return "http://arc" + name.slice(-3) + ".contest.atcoder.jp/";
-    }else if(name.indexOf("AtCoder Beginner Contest") != -1){
-        return "http://abc" + name.slice(-3) + ".contest.atcoder.jp/";
-    }
-    return "https://atcoder.jp/contest";
+var parseDuration = function(duration_string){
+  var duration_parts = duration_string.split(":");
+  var hours = Number(duration_parts[0]);
+  var minutes = Number(duration_parts[1]);
+  return (hours*60 + minutes)*60;
+};
+
+var calcStartTimeUTC = function(datetimeString){
+  var nine_hours_in_s = 9 * 60 * 60;
+
+  var year = datetimeString.slice(0,4);
+  var month = datetimeString.slice(5,7) - 1;
+  var day = datetimeString.slice(8,10);
+  var hour = datetimeString.slice(11,13);
+  var minute = datetimeString.slice(14,16);
+  
+  // Date provided by atcoder follows Tokyo timezone(GMT+09:00)
+  var datetime_in_s_utc = new Date(Date.UTC(year, month, day, hour, minute)).getTime()/1000 - nine_hours_in_s;
+  return datetime_in_s_utc;
 };
 
 var atcoder = function(){
-    return axios.get("https://clients6.google.com/calendar/v3/calendars/atcoder.jp_evjr135c62bddnpd26lotmdicg@group.calendar.google.com/events?calendarId=atcoder.jp_evjr135c62bddnpd26lotmdicg%40group.calendar.google.com&timeMin=2017-06-25T00%3A00%3A00%2B09%3A00&key=AIzaSyBNlYH01_9Hc5S1J9vuFmu2nUqBZJNAXxs", {timeout: 15000})
+    var config = {
+      timeout: 30000,
+      headers: {
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,im'
+      }
+    };
+    return axios.get("https://atcoder.jp/contest", config)
                 .then(function(response){
-                    contests = response.data.items
-                        .map(function(contest){
-                            var start_time = new Date(contest.start.dateTime).getTime()/1000;
-                            var end_time = new Date(contest.end.dateTime).getTime()/1000;
-                            var name = contest.summary;
-                            return {
-                                "name": name,
-                                "url": contest_url(name),
-                                "platform": 'atcoder',
-                                "start_time": start_time,
-                                // the calendar does not provide endtime nor duration
-                                // so assume duration 2hrs as they tend to be in Atcoder
-                                "end_time": start_time + (2 * 60* 60),
-                                "duration": (2 * 60* 60),
-                            };
-                        });
+                    var $ = cheerio.load(response.data);
+                    var contests = $('.table-bordered > tbody > tr').slice(1);
 
-                    return contests;
+                    return contests.map(function(i, contest){
+                        var details = $(this).children('td');
+                        var name = details.eq(1).find('a').text();
+                        var start_time = calcStartTimeUTC(details.eq(0).find('a').text());
+                        var duration = parseDuration(details.eq(2).text());
+                        var url = details.eq(1).find('a').attr('href');
+
+                        return {
+                          "name": name,
+                          "url": url,
+                          "platform": "atcoder",
+                          "start_time": start_time,
+                          "end_time": start_time + duration,
+                          "duration": duration
+                        };
+                    }).get();
                 })
                 .catch(function(error){
                     console.log("Atcoder: ", error.toString());
