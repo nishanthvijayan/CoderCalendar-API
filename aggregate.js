@@ -7,6 +7,7 @@ var leetcode = require("./parsers/leetcode");
 var codechef = require("./parsers/codechef");
 var atcoder = require("./parsers/atcoder");
 var csacademy = require("./parsers/csacademy");
+var coj = require("./parsers/coj");
 
 var aggregate = function(){
 	return axios.all([
@@ -17,7 +18,8 @@ var aggregate = function(){
 			leetcode(),
 			codechef(),
 			atcoder(),
-			csacademy()
+			csacademy(),
+			coj()
 		])
 		.then(function(contests_by_platform){
 			var contests = [].concat.apply([], contests_by_platform);
