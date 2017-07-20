@@ -15,31 +15,43 @@ var calcTimeUTC = function(datetimeString){
   return datetime_in_s_utc;
 };
 
+function getUpcomingContests() {
+  return axios.get('http://coj.uci.cu/tables/coming.xhtml', {timeout: 15000});
+}
+
+function getOngoingContests() {
+  return axios.get('http://coj.uci.cu/tables/running.xhtml', {timeout: 15000});
+}
+
 var coj = function(){
-    var config = {
-      timeout: 30000
-    };
-    return axios.get("http://coj.uci.cu/tables/coming.xhtml", config)
-                .then(function(response){
-                    var $ = cheerio.load(response.data);                    
-                    var contests = $('table').eq(1).find('tr').slice(1);
+    return axios.all([getOngoingContests(), getUpcomingContests()])
+                .then(function(responses){
+                    var contests = [];
+                    responses.forEach(function(response){
+                        var $ = cheerio.load(response.data);
+                        var contest_rows = $('table').eq(1).find('tr').slice(1);
 
-                    return contests.map(function(i, contest){
-                        var details = $(this).children('td');
-                        var name = details.eq(2).find('a').text();
-                        var start_time = calcTimeUTC(details.eq(3).find('a').text().slice(17));
-                        var end_time = calcTimeUTC(details.eq(4).find('a').text().slice(17));
-                        var url = "http://coj.uci.cu/contest/" + details.eq(2).find('a').attr('href');
+                        contests = contests.concat(
+                            contest_rows.map(function(i, contest){
+                                var details = $(this).children('td');
+                                var name = details.eq(2).find('a').text();
+                                var start_time = calcTimeUTC(details.eq(3).find('a').text().slice(17));
+                                var end_time = calcTimeUTC(details.eq(4).find('a').text().slice(17));
+                                var url = "http://coj.uci.cu/contest/" + details.eq(2).find('a').attr('href');
 
-                        return {
-                          "name": name,
-                          "url": url,
-                          "platform": "coj",
-                          "start_time": start_time,
-                          "end_time": end_time,
-                          "duration": end_time - start_time
-                        };
-                    }).get();
+                                return {
+                                    "name": name,
+                                    "url": url,
+                                    "platform": "coj",
+                                    "start_time": start_time,
+                                    "end_time": end_time,
+                                    "duration": end_time - start_time
+                                };
+                            }).get()
+                        );
+                    });
+
+                    return contests;
                 })
                 .catch(function(error){
                     console.log("coj: ", error.toString());
