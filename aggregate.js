@@ -1,47 +1,41 @@
-var axios = require("axios");
-var codeforces = require("./parsers/codeforces");
-var hackerearth = require("./parsers/hackerearth");
-var hackerrank = require("./parsers/hackerrank");
-var topcoder = require("./parsers/topcoder");
-var leetcode = require("./parsers/leetcode");
-var codechef = require("./parsers/codechef");
-var atcoder = require("./parsers/atcoder");
-var csacademy = require("./parsers/csacademy");
-var coj = require("./parsers/coj");
+const axios = require('axios');
+const codeforces = require('./parsers/codeforces');
+const hackerearth = require('./parsers/hackerearth');
+const hackerrank = require('./parsers/hackerrank');
+const topcoder = require('./parsers/topcoder');
+const leetcode = require('./parsers/leetcode');
+const codechef = require('./parsers/codechef');
+const atcoder = require('./parsers/atcoder');
+const csacademy = require('./parsers/csacademy');
+const coj = require('./parsers/coj');
 
-var aggregate = function(){
-	return axios.all([
-			codeforces(),
-			hackerearth(),
-			hackerrank(),
-			topcoder(),
-			leetcode(),
-			codechef(),
-			atcoder(),
-			csacademy(),
-			coj()
-		])
-		.then(function(contests_by_platform){
-			var contests = [].concat.apply([], contests_by_platform);
-	        
+const aggregate = function () {
+  return axios.all([
+    codeforces(),
+    hackerearth(),
+    hackerrank(),
+    topcoder(),
+    leetcode(),
+    codechef(),
+    atcoder(),
+    csacademy(),
+    coj(),
+  ])
+    .then((contests_by_platform) => {
+      let contests = [].concat.apply([], contests_by_platform);
+
 	        // remove contests that are over
-	        contests = contests.filter(function(contest){
-    	    	return (contest.end_time > new Date().getTime()/1000);
-        	});
+	        contests = contests.filter(contest => (contest.end_time > new Date().getTime() / 1000));
 
-	        var ongoing_contests = contests.filter(function(contest){
-    	    	return (contest.start_time < new Date().getTime()/1000);
-        	});
+	        const ongoing_contests = contests.filter(contest => (contest.start_time < new Date().getTime() / 1000));
 
-	        var upcoming_contests = contests.filter(function(contest){
-	        	return (contest.start_time > new Date().getTime()/1000);
-	        });
+	        const upcoming_contests = contests.filter(contest => (contest.start_time > new Date().getTime() / 1000));
 
 	        return {
-	        	"ongoing": ongoing_contests,
-	        	"upcoming": upcoming_contests
+	        	ongoing: ongoing_contests,
+	        	upcoming: upcoming_contests,
 	        };
-		});
+    });
 };
 
 module.exports = aggregate;
