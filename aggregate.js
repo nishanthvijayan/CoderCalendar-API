@@ -9,33 +9,31 @@ const atcoder = require('./parsers/atcoder');
 const csacademy = require('./parsers/csacademy');
 const coj = require('./parsers/coj');
 
-const aggregate = function () {
-  return axios.all([
-    codeforces(),
-    hackerearth(),
-    hackerrank(),
-    topcoder(),
-    leetcode(),
-    codechef(),
-    atcoder(),
-    csacademy(),
-    coj(),
-  ])
-    .then((contests_by_platform) => {
-      let contests = [].concat.apply([], contests_by_platform);
+const aggregate = () => axios.all([
+  codeforces(),
+  hackerearth(),
+  hackerrank(),
+  topcoder(),
+  leetcode(),
+  codechef(),
+  atcoder(),
+  csacademy(),
+  coj(),
+])
+  .then((contestsByPlatform) => {
+    let contests = [].concat.apply([], contestsByPlatform);
 
-	        // remove contests that are over
-	        contests = contests.filter(contest => (contest.end_time > new Date().getTime() / 1000));
+    // remove contests that are over
+    const curTime = new Date().getTime() / 1000;
+    contests = contests.filter(contest => contest.end_time > curTime);
 
-	        const ongoing_contests = contests.filter(contest => (contest.start_time < new Date().getTime() / 1000));
+    const ongoingContests = contests.filter(contest => contest.start_time < curTime);
+    const upcomingContests = contests.filter(contest => contest.start_time > curTime);
 
-	        const upcoming_contests = contests.filter(contest => (contest.start_time > new Date().getTime() / 1000));
-
-	        return {
-	        	ongoing: ongoing_contests,
-	        	upcoming: upcoming_contests,
-	        };
-    });
-};
+    return {
+      ongoing: ongoingContests,
+      upcoming: upcomingContests,
+    };
+  });
 
 module.exports = aggregate;

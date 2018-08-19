@@ -7,17 +7,17 @@ const filter = require('./filter');
 const cacheTTL = 15 * 60 * 1000;
 
 const server = http.createServer((req, res) => {
-  const url_parts = url.parse(req.url, true);
+  const urlParts = url.parse(req.url, true);
 
-  if (url_parts.pathname != '/') {
+  if (urlParts.pathname !== '/') {
     res.writeHead(404);
     res.end();
     return;
   }
 
   const options = {
-    platform: url_parts.query.platform || null,
-    status: url_parts.query.status || null,
+    platform: urlParts.query.platform || null,
+    status: urlParts.query.status || null,
   };
 
   const cachedResults = cache.get('results');
