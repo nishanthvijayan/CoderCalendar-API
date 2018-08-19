@@ -40,7 +40,7 @@ const atcoder = function () {
       return contests.map((i, contest) => {
         const details = $(this).children('td');
         const name = details.eq(1).find('a').text();
-        const start_time = calcStartTimeUTC(details.eq(0).find('a').text());
+        const startTime = calcStartTimeUTC(details.eq(0).find('a').text());
         const duration = parseDuration(details.eq(2).text());
         const url = details.eq(1).find('a').attr('href');
 
@@ -48,9 +48,8 @@ const atcoder = function () {
           name,
           url,
           platform: 'atcoder',
-          start_time,
-          end_time: start_time + duration,
-          duration,
+          startTime,
+          endTime: startTime + duration,
         };
       }).get();
     })

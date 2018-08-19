@@ -37,17 +37,16 @@ const coj = () => axios.all([getOngoingContests(), getUpcomingContests()])
         contest_rows.map(function (i, contest) {
           const details = $(this).children('td');
           const name = details.eq(2).find('a').text();
-          const start_time = calcTimeUTC(details.eq(3).find('a').text().slice(17));
-          const end_time = calcTimeUTC(details.eq(4).find('a').text().slice(17));
+          const startTime = calcTimeUTC(details.eq(3).find('a').text().slice(17));
+          const endTime = calcTimeUTC(details.eq(4).find('a').text().slice(17));
           const url = `http://coj.uci.cu/contest/${details.eq(2).find('a').attr('href')}`;
 
           return {
             name,
             url,
             platform: 'coj',
-            start_time,
-            end_time,
-            duration: end_time - start_time,
+            startTime,
+            endTime,
           };
         }).get(),
       );

@@ -8,8 +8,8 @@ const convertToStandardContest = contest => ({
   name: contest.summary,
   url: 'http://topcoder.com',
   platform: 'topcoder',
-  start_time: new Date(contest.start.dateTime).getTime() / 1000,
-  end_time: new Date(contest.end.dateTime).getTime() / 1000,
+  startTime: new Date(contest.start.dateTime).getTime() / 1000,
+  endTime: new Date(contest.end.dateTime).getTime() / 1000,
 });
 
 const topcoder = () => axios.get(TOPCODER_API_URL, { timeout: 15000 })

@@ -13,9 +13,8 @@ const hackerearth = () => {
         name: contest.title,
         url: contest.url,
         platform: 'hackerearth',
-        start_time: getStartTime(contest),
-        end_time: getEndTime(contest),
-        duration: (getEndTime(contest) - getStartTime(contest)),
+        startTime: getStartTime(contest),
+        endTime: getEndTime(contest),
       })))
     .catch(parserErrorHandler(PLATFORM));
 };

@@ -13,15 +13,14 @@ const hackerrank = function () {
     .then((response) => {
       const contests = (response[0].data.models).concat(response[1].data.models);
       return contests.map((contest) => {
-        const start_time = new Date(contest.get_starttimeiso).getTime() / 1000;
-        const end_time = new Date(contest.get_endtimeiso).getTime() / 1000;
+        const startTime = new Date(contest.get_starttimeiso).getTime() / 1000;
+        const endTime = new Date(contest.get_endtimeiso).getTime() / 1000;
         return {
           name: contest.name,
           url: `https://www.hackerrank.com/${contest.slug}`,
           platform: 'hackerrank',
-          start_time,
-          end_time,
-          duration: (end_time - start_time),
+          startTime,
+          endTime,
         };
       });
     })

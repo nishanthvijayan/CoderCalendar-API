@@ -12,9 +12,8 @@ const convertToStandardContest = contest => ({
   name: contest.title,
   url: `https://leetcode.com/contest/${contest.title_slug}`,
   platform: 'leetcode',
-  start_time: contest.start_time,
-  end_time: contest.start_time + contest.duration,
-  duration: contest.duration,
+  startTime: contest.start_time,
+  endTime: contest.start_time + contest.duration,
 });
 
 const leetcode = () => axios.get(LEETCODE_API_URL, { timeout: 15000 })

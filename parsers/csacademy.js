@@ -16,9 +16,8 @@ const csacademy = () => {
         name: contest.longName,
         url: `https://csacademy.com/contest/${contest.name}`,
         platform: 'csacademy',
-        start_time: contest.startTime,
-        end_time: contest.endTime,
-        duration: (contest.endTime - contest.startTime),
+        startTime: contest.startTime,
+        endTime: contest.endTime,
       })))
     .catch(parserErrorHandler(PLATFORM));
 };

@@ -25,10 +25,10 @@ const aggregate = () => axios.all([
 
     // remove contests that are over
     const curTime = new Date().getTime() / 1000;
-    contests = contests.filter(contest => contest.end_time > curTime);
+    contests = contests.filter(contest => contest.endTime > curTime);
 
-    const ongoingContests = contests.filter(contest => contest.start_time < curTime);
-    const upcomingContests = contests.filter(contest => contest.start_time > curTime);
+    const ongoingContests = contests.filter(contest => contest.startTime < curTime);
+    const upcomingContests = contests.filter(contest => contest.startTime > curTime);
 
     return {
       ongoing: ongoingContests,

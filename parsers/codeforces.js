@@ -10,8 +10,8 @@ const convertToStandardContest = contest => ({
   name: contest.name,
   url: `http://codeforces.com/contest/${contest.id}`,
   platform: PLATFORM,
-  start_time: contest.startTimeSeconds,
-  end_time: (contest.startTimeSeconds + contest.durationSeconds),
+  startTime: contest.startTimeSeconds,
+  endTime: (contest.startTimeSeconds + contest.durationSeconds),
 });
 
 const codeforces = () => axios.get(CODEFORCES_API_URL, { timeout: 15000 })
