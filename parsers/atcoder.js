@@ -1,8 +1,11 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const parserErrorHandler = require('./utils');
 
-const parseDuration = function (duration_string) {
-  const duration_parts = duration_string.split(':');
+const PLATFORM = 'ATCODER';
+
+const parseDuration = (durationString) => {
+  const duration_parts = durationString.split(':');
   const hours = Number(duration_parts[0]);
   const minutes = Number(duration_parts[1]);
   return (hours * 60 + minutes) * 60;
@@ -18,8 +21,8 @@ const calcStartTimeUTC = function (datetimeString) {
   const minute = datetimeString.slice(14, 16);
 
   // Date provided by atcoder follows Tokyo timezone(GMT+09:00)
-  const datetime_in_s_utc = new Date(Date.UTC(year, month, day, hour, minute)).getTime() / 1000 - nine_hours_in_s;
-  return datetime_in_s_utc;
+  const datetimeInSecUTC = new Date(Date.UTC(year, month, day, hour, minute)).getTime() / 1000 - nine_hours_in_s;
+  return datetimeInSecUTC;
 };
 
 const atcoder = function () {
@@ -34,7 +37,7 @@ const atcoder = function () {
       const $ = cheerio.load(response.data);
       const contests = $('.table-bordered > tbody > tr').slice(1);
 
-      return contests.map(function (i, contest) {
+      return contests.map((i, contest) => {
         const details = $(this).children('td');
         const name = details.eq(1).find('a').text();
         const start_time = calcStartTimeUTC(details.eq(0).find('a').text());
@@ -51,9 +54,7 @@ const atcoder = function () {
         };
       }).get();
     })
-    .catch((error) => {
-      console.log('Atcoder: ', error.toString());
-    });
+    .catch(parserErrorHandler(PLATFORM));
 };
 
 module.exports = atcoder;

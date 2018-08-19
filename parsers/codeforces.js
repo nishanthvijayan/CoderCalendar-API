@@ -1,22 +1,21 @@
 const axios = require('axios');
+const parserErrorHandler = require('./utils');
 
-const codeforces = function () {
-  return axios.get('http://codeforces.com/api/contest.list', { timeout: 15000 })
-    .then((response) => {
-      contests = response.data.result
-        .filter(contest => contest.phase.trim() != 'FINISHED').map(contest => ({
-          name: contest.name,
-          url: `http://codeforces.com/contest/${contest.id}`,
-          platform: 'codeforces',
-          start_time: contest.startTimeSeconds,
-          end_time: (contest.startTimeSeconds + contest.durationSeconds),
-          duration: contest.durationSeconds,
-        }));
-      return contests;
-    })
-    .catch((error) => {
-      console.log('Codeforces: ', error.toString());
-    });
-};
+const PLATFORM = 'codeforces';
+const CODEFORCES_API_URL = "'http://codeforces.com/api/contest.list'";
+
+const isContestActive = contest => contest.phase.trim() !== 'FINISHED';
+
+const convertToStandardContest = contest => ({
+  name: contest.name,
+  url: `http://codeforces.com/contest/${contest.id}`,
+  platform: PLATFORM,
+  start_time: contest.startTimeSeconds,
+  end_time: (contest.startTimeSeconds + contest.durationSeconds),
+});
+
+const codeforces = () => axios.get(CODEFORCES_API_URL, { timeout: 15000 })
+  .then(response => response.data.result.filter(isContestActive).map(convertToStandardContest))
+  .catch(parserErrorHandler(PLATFORM));
 
 module.exports = codeforces;

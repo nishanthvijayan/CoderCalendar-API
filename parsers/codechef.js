@@ -1,8 +1,8 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-function parseContestDetails($, contest_row) {
-  const details = $(contest_row).find('td');
+function parseContestDetails($, contestRow) {
+  const details = $(contestRow).find('td');
   const start_time = new Date(details.eq(2).text()).getTime() / 1000;
   const end_time = new Date(details.eq(3).text()).getTime() / 1000;
   return {
@@ -21,15 +21,16 @@ const codechef = function () {
       const $ = cheerio.load(response.data);
       const statusdiv = $('table .dataTable');
       const headings = $('h3');
-      const contest_tables = { 'Future Contests': [], 'Present Contests': [] };
+      const contestTables = { 'Future Contests': [], 'Present Contests': [] };
+
       for (let i = 0; i < headings.length; i++) {
-        if (headings.eq(i).text() != 'Past Contests') {
-          contest_tables[headings.eq(i).text()] = statusdiv.eq(i).find('tr').slice(1);
+        if (headings.eq(i).text() !== 'Past Contests') {
+          contestTables[headings.eq(i).text()] = statusdiv.eq(i).find('tr').slice(1);
         }
       }
-      let contests = contest_tables['Present Contests'].map((i, elem) => parseContestDetails($, elem)).get();
+      let contests = contestTables['Present Contests'].map((i, elem) => parseContestDetails($, elem)).get();
 
-      contests = contests.concat(contest_tables['Future Contests'].map((i, elem) => parseContestDetails($, elem)).get());
+      contests = contests.concat(contestTables['Future Contests'].map((i, elem) => parseContestDetails($, elem)).get());
 
       return contests;
     })
