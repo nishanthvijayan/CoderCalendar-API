@@ -36,8 +36,8 @@ const atcoder = () => {
       const $ = cheerio.load(response.data);
       const contests = $('.table-bordered > tbody > tr').slice(1);
 
-      return contests.map((i, contest) => {
-        const details = $(this).children('td');
+      return contests.map((_, contest) => {
+        const details = $(contest).children('td');
         const name = details.eq(1).find('a').text();
         const startTime = calcStartTimeUTC(details.eq(0).find('a').text());
         const duration = parseDuration(details.eq(2).text());
