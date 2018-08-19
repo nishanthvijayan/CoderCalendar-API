@@ -4,5 +4,5 @@ const flat = arr => arr.reduce((res, it) => res.concat(Array.isArray(it) ? flat(
 
 module.exports = {
   parserErrorHandler,
-  flat
+  flat,
 };
