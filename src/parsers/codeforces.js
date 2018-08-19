@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { parserErrorHandler } = require('./utils');
+const { parserErrorHandler } = require('./../utils');
 
 const PLATFORM = 'codeforces';
 const CODEFORCES_API_URL = "'http://codeforces.com/api/contest.list'";

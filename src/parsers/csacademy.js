@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { parserErrorHandler } = require('./utils');
+const { parserErrorHandler } = require('./../utils');
 
 const PLATFORM = 'CSAcademy';
 

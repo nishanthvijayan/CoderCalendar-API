@@ -1,5 +1,6 @@
 const axios = require('axios');
 const cache = require('memory-cache');
+const { flat } = require('./utils');
 
 const codeforces = require('./parsers/codeforces');
 const hackerearth = require('./parsers/hackerearth');
@@ -10,8 +11,6 @@ const codechef = require('./parsers/codechef');
 const atcoder = require('./parsers/atcoder');
 const csacademy = require('./parsers/csacademy');
 const coj = require('./parsers/coj');
-
-const flat = arr => arr.reduce((res, it) => res.concat(Array.isArray(it) ? flat(it) : it), []);
 
 const runner = () => axios.all([
   codeforces(),
@@ -43,3 +42,4 @@ const runner = () => axios.all([
   });
 
 module.exports = runner;
+runner()
