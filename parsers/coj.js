@@ -14,8 +14,7 @@ const calcTimeUTC = (datetimeString) => {
   const minute = datetimeString.slice(14, 16);
 
   // Date provided by coj follows Cuba timezone(GMT+04:00)
-  const datetimeInSecondsUtc = new Date(Date.UTC(year, month, day, hour, minute)).getTime() / 1000 + fourHoursInSeconds;
-  return datetimeInSecondsUtc;
+  return new Date(Date.UTC(year, month, day, hour, minute)).getTime() / 1000 + fourHoursInSeconds;
 };
 
 function getUpcomingContests() {
@@ -31,10 +30,10 @@ const coj = () => axios.all([getOngoingContests(), getUpcomingContests()])
     let contests = [];
     responses.forEach((response) => {
       const $ = cheerio.load(response.data);
-      const contest_rows = $('table').eq(1).find('tr').slice(1);
+      const contestRows = $('table').eq(1).find('tr').slice(1);
 
       contests = contests.concat(
-        contest_rows.map(function (i, contest) {
+        contestRows.map((i, contest) => {
           const details = $(this).children('td');
           const name = details.eq(2).find('a').text();
           const startTime = calcTimeUTC(details.eq(3).find('a').text().slice(17));

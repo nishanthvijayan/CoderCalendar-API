@@ -5,14 +5,14 @@ const parserErrorHandler = require('./utils');
 const PLATFORM = 'ATCODER';
 
 const parseDuration = (durationString) => {
-  const duration_parts = durationString.split(':');
-  const hours = Number(duration_parts[0]);
-  const minutes = Number(duration_parts[1]);
+  const durationParts = durationString.split(':');
+  const hours = Number(durationParts[0]);
+  const minutes = Number(durationParts[1]);
   return (hours * 60 + minutes) * 60;
 };
 
-const calcStartTimeUTC = function (datetimeString) {
-  const nine_hours_in_s = 9 * 60 * 60;
+const calcStartTimeUTC = (datetimeString) => {
+  const nineHoursInSeconds = 9 * 60 * 60;
 
   const year = datetimeString.slice(0, 4);
   const month = datetimeString.slice(5, 7) - 1;
@@ -21,11 +21,10 @@ const calcStartTimeUTC = function (datetimeString) {
   const minute = datetimeString.slice(14, 16);
 
   // Date provided by atcoder follows Tokyo timezone(GMT+09:00)
-  const datetimeInSecUTC = new Date(Date.UTC(year, month, day, hour, minute)).getTime() / 1000 - nine_hours_in_s;
-  return datetimeInSecUTC;
+  return new Date(Date.UTC(year, month, day, hour, minute)).getTime() / 1000 - nineHoursInSeconds;
 };
 
-const atcoder = function () {
+const atcoder = () => {
   const config = {
     timeout: 30000,
     headers: {
