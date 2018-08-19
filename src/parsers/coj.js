@@ -30,11 +30,11 @@ const coj = () => axios.all([getOngoingContests(), getUpcomingContests()])
     let contests = [];
     responses.forEach((response) => {
       const $ = cheerio.load(response.data);
-      const contestRows = $('table').eq(1).find('tr').slice(1);
+      const contestRows = $('table').eq(1).find('tr').slice(2);
 
       contests = contests.concat(
-        contestRows.map((i, contest) => {
-          const details = $(this).children('td');
+        contestRows.map((_, contest) => {
+          const details = $(contest).children('td');
           const name = details.eq(2).find('a').text();
           const startTime = calcTimeUTC(details.eq(3).find('a').text().slice(17));
           const endTime = calcTimeUTC(details.eq(4).find('a').text().slice(17));
