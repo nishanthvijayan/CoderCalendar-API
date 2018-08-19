@@ -54,6 +54,4 @@ const server = http.createServer((req, res) => {
   respondWithError(res, 'Cache empty');
 });
 
-server.listen(8000);
-
 module.exports = server;

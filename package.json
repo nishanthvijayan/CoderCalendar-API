@@ -4,7 +4,7 @@
   "description": "An API listing programming contests across multiple platforms",
   "main": "index.js",
   "scripts": {
-    "start": "export NODE_ENV=dev && node src/server.js",
+    "start": "export NODE_ENV=dev && node src/app.js",
     "test": "mocha --timeout 30000"
   },
   "repository": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "cheerio": "^1.0.0-rc.2",
+    "cron": "^1.4.0",
     "memory-cache": "^0.2.0"
   },
   "devDependencies": {
