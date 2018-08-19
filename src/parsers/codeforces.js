@@ -2,7 +2,7 @@ const axios = require('axios');
 const { parserErrorHandler } = require('./../utils');
 
 const PLATFORM = 'codeforces';
-const CODEFORCES_API_URL = "'http://codeforces.com/api/contest.list'";
+const CODEFORCES_API_URL = 'http://codeforces.com/api/contest.list';
 
 const isContestActive = contest => contest.phase.trim() !== 'FINISHED';
 
