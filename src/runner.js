@@ -11,6 +11,8 @@ const atcoder = require('./parsers/atcoder');
 const csacademy = require('./parsers/csacademy');
 const coj = require('./parsers/coj');
 
+const flat = arr => arr.reduce((res, it) => res.concat(Array.isArray(it) ? flat(it) : it), []);
+
 const runner = () => axios.all([
   codeforces(),
   hackerearth(),
@@ -23,7 +25,7 @@ const runner = () => axios.all([
   coj(),
 ])
   .then((contestsByPlatform) => {
-    let contests = [].concat.apply([], contestsByPlatform);
+    let contests = flat(contestsByPlatform);
 
     const curTime = new Date().getTime() / 1000;
 
