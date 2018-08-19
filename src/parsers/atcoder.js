@@ -1,6 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const parserErrorHandler = require('./utils');
+const { parserErrorHandler } = require('./utils');
 
 const PLATFORM = 'ATCODER';
 

@@ -1,5 +1,5 @@
 const axios = require('axios');
-const parserErrorHandler = require('./utils');
+const { parserErrorHandler } = require('./utils');
 
 const LEETCODE_API_URL = 'https://leetcode.com/contest/api/list/';
 const PLATFORM = 'LEETCODE';
