@@ -1,10 +1,6 @@
 const http = require('http');
-const cache = require('memory-cache');
 const url = require('url');
-const aggregate = require('./aggregate');
-const filter = require('./filter');
-
-const CACHE_TTL = 15 * 60 * 1000;
+const cache = require('memory-cache');
 
 const respondWithResult = (res, results) => {
   res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -15,6 +11,24 @@ const respondWithResult = (res, results) => {
 const respondWithError = (res, err) => {
   res.writeHead(500, err.toString());
   res.end();
+};
+
+const filter = (contests, options) => {
+  let filteredContests = contests;
+  if (options.platform) {
+    filteredContests = {
+      ongoing: contests.ongoing.filter(contest => contest.platform === options.platform),
+      upcoming: contests.upcoming.filter(contest => contest.platform === options.platform),
+    };
+  }
+
+  if (options.status === 'ongoing') {
+    filteredContests = filteredContests.ongoing;
+  } else if (options.status === 'upcoming') {
+    filteredContests = filteredContests.upcoming;
+  }
+
+  return filteredContests;
 };
 
 const server = http.createServer((req, res) => {
@@ -37,12 +51,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  aggregate()
-    .then((results) => {
-      cache.put('results', results, CACHE_TTL);
-      respondWithResult(res, filter(results, filterOpts));
-    })
-    .catch(error => respondWithError(res, error));
+  respondWithError(res, 'Cache empty');
 });
 
 server.listen(8000);

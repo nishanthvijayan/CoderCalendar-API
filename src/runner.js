@@ -1,4 +1,6 @@
 const axios = require('axios');
+const cache = require('memory-cache');
+
 const codeforces = require('./parsers/codeforces');
 const hackerearth = require('./parsers/hackerearth');
 const hackerrank = require('./parsers/hackerrank');
@@ -9,7 +11,7 @@ const atcoder = require('./parsers/atcoder');
 const csacademy = require('./parsers/csacademy');
 const coj = require('./parsers/coj');
 
-const aggregate = () => axios.all([
+const runner = () => axios.all([
   codeforces(),
   hackerearth(),
   hackerrank(),
@@ -23,17 +25,19 @@ const aggregate = () => axios.all([
   .then((contestsByPlatform) => {
     let contests = [].concat.apply([], contestsByPlatform);
 
-    // remove contests that are over
     const curTime = new Date().getTime() / 1000;
+
+    // remove contests that are over
     contests = contests.filter(contest => contest.endTime > curTime);
 
     const ongoingContests = contests.filter(contest => contest.startTime < curTime);
     const upcomingContests = contests.filter(contest => contest.startTime > curTime);
 
-    return {
+    cache.put('results', {
+      timestamp: curTime,
       ongoing: ongoingContests,
       upcoming: upcomingContests,
-    };
+    });
   });
 
-module.exports = aggregate;
+module.exports = runner;
