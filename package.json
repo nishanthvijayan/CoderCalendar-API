@@ -4,7 +4,7 @@
   "description": "An API listing programming contests across multiple platforms",
   "main": "index.js",
   "scripts": {
-    "start": "export NODE_ENV=dev && node src/app.js",
+    "start": "node src/app.js",
     "test": "mocha --timeout 30000"
   },
   "repository": {
