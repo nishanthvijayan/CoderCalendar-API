@@ -24,7 +24,7 @@ const runner = () => axios.all([
   coj(),
 ])
   .then((contestsByPlatform) => {
-    let contests = flat(contestsByPlatform);
+    let contests = flat(contestsByPlatform.filter(it => Array.isArray(it)));
 
     const curTime = new Date().getTime() / 1000;
 
@@ -42,4 +42,3 @@ const runner = () => axios.all([
   });
 
 module.exports = runner;
-runner()
