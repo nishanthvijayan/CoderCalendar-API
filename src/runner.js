@@ -1,6 +1,6 @@
 const axios = require('axios');
 const cache = require('memory-cache');
-const { flat } = require('./utils');
+const { flat, getCurrentTimeInSeconds } = require('./utils');
 
 const codeforces = require('./parsers/codeforces');
 const hackerearth = require('./parsers/hackerearth');
@@ -24,15 +24,18 @@ const runner = () => axios.all([
   coj(),
 ])
   .then((contestsByPlatform) => {
-    let contests = flat(contestsByPlatform.filter(it => Array.isArray(it)));
+    const contests = flat(contestsByPlatform.filter(it => Array.isArray(it)));
 
-    const curTime = new Date().getTime() / 1000;
+    const curTime = getCurrentTimeInSeconds();
 
-    // remove contests that are over
-    contests = contests.filter(contest => contest.endTime > curTime);
+    const sortByStartTime = (a, b) => a.startTime - b.startTime;
+    const sortByEndTime = (a, b) => a.endTime - b.endTime;
 
-    const ongoingContests = contests.filter(contest => contest.startTime < curTime);
-    const upcomingContests = contests.filter(contest => contest.startTime > curTime);
+    const isOngoing = contest => contest.startTime < curTime && contest.endTime > curTime;
+    const isUpcoming = contest => contest.startTime > curTime && contest.endTime > curTime;
+
+    const ongoingContests = contests.filter(isOngoing).sort(sortByEndTime);
+    const upcomingContests = contests.filter(isUpcoming).sort(sortByStartTime);
 
     cache.put('results', {
       timestamp: curTime,

@@ -1,10 +1,8 @@
 const axios = require('axios');
-const { parserErrorHandler } = require('./../utils');
+const { parserErrorHandler, getCurrentTimeInSeconds } = require('./../utils');
 
 const LEETCODE_API_URL = 'https://leetcode.com/contest/api/list/';
 const PLATFORM = 'LEETCODE';
-
-const getCurrentTime = () => new Date().getTime() / 1000;
 
 const isContestActive = curTime => contest => (contest.start_time + contest.duration) > curTime;
 
@@ -18,7 +16,7 @@ const convertToStandardContest = contest => ({
 
 const leetcode = () => axios.get(LEETCODE_API_URL, { timeout: 15000 })
   .then(response => response.data.contests
-    .filter(isContestActive(getCurrentTime()))
+    .filter(isContestActive(getCurrentTimeInSeconds()))
     .map(convertToStandardContest))
   .catch(parserErrorHandler(PLATFORM));
 
