@@ -10,5 +10,5 @@ new CronJob('*/10 * * * *', runner).start();
 runner();
 
 // Start the server
-const port = process.env.PORT ? process.env.PORT : 8000
-server.listen(port, () => console.log("Listening in port " + port));
+const port = process.env.PORT ? process.env.PORT : 8000;
+server.listen(port, () => console.log(`Listening in port ${port}`));
