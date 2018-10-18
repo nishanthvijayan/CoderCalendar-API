@@ -15,6 +15,7 @@ const respondWithError = (res, err) => {
 
 const filter = (contests, options) => {
   let filteredContests = contests;
+
   if (options.platform) {
     filteredContests = {
       ongoing: contests.ongoing.filter(contest => contest.platform === options.platform),
@@ -32,17 +33,17 @@ const filter = (contests, options) => {
 };
 
 const server = http.createServer((req, res) => {
-  const urlParts = url.parse(req.url, true);
+  const { pathname, query } = url.parse(req.url, true);
 
-  if (urlParts.pathname !== '/') {
+  if (pathname !== '/') {
     res.writeHead(404);
     res.end();
     return;
   }
 
   const filterOpts = {
-    platform: urlParts.query.platform || null,
-    status: urlParts.query.status || null,
+    platform: query.platform || null,
+    status: query.status || null,
   };
 
   const cachedResults = cache.get('results');
