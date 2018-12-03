@@ -3,8 +3,9 @@ const cheerio = require('cheerio');
 
 function parseContestDetails($, contestRow) {
   const details = $(contestRow).find('td');
-  const startTime = new Date(details.eq(2).text()).getTime() / 1000;
-  const endTime = new Date(details.eq(3).text()).getTime() / 1000;
+  const startTime = new Date(details.eq(2).attr("data-starttime")).getTime() / 1000;
+  const endTime = new Date(details.eq(3).attr("data-endtime")).getTime() / 1000;
+
   return {
     name: details.eq(1).text(),
     url: `http://www.codechef.com${details.eq(1).find('a').attr('href')}`,
