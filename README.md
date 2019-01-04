@@ -1,6 +1,20 @@
 # CoderCalendar-API
 An API listing programming contests across multiple platforms  
 
+
+## Building locally
+To install the dependencies, run
+``` 
+npm install 
+```
+from inside this directory.  
+  
+To start the server, run
+```
+npm start
+```
+
+
 ## Platforms supported
 1. Hackerrank
 2. Codechef
