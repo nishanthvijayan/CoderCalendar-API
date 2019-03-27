@@ -31,7 +31,7 @@ const atcoder = () => {
       Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,im',
     },
   };
-  return axios.get('https://atcoder.jp/contest', config)
+  return axios.get('https://atcoder.jp/contests', config)
     .then((response) => {
       const $ = cheerio.load(response.data);
       const contests = $('.table-bordered > tbody > tr').slice(1);
