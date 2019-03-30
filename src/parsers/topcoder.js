@@ -12,8 +12,14 @@ const convertToStandardContest = contest => ({
   endTime: new Date(contest.end.dateTime).getTime() / 1000,
 });
 
+const hasStartAndEndDateTime =  it => it.start && it.start.dateTime && it.end && it.end.dateTime
+
 const topcoder = () => axios.get(TOPCODER_API_URL, { timeout: 15000 })
-  .then(response => response.data.items.map(convertToStandardContest))
+  .then(response =>
+    response.data.items
+    .filter(hasStartAndEndDateTime)
+    .map(convertToStandardContest)
+  )
   .catch(parserErrorHandler(PLATFORM));
 
 module.exports = topcoder;
