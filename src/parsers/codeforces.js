@@ -8,7 +8,7 @@ const isContestActive = contest => contest.phase.trim() !== 'FINISHED';
 
 const convertToStandardContest = contest => ({
   name: contest.name,
-  url: `http://codeforces.com/contest/${contest.id}`,
+  url: `http://codeforces.com/contests/${contest.id}`,
   platform: PLATFORM,
   startTime: contest.startTimeSeconds,
   endTime: (contest.startTimeSeconds + contest.durationSeconds),
