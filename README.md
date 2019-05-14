@@ -3,16 +3,23 @@ An API listing programming contests across multiple platforms
 
 
 ## Building locally
-To install the dependencies, run
+1. To install the dependencies, run
 ``` 
 npm install 
 ```
 from inside this directory.  
+    
+    
+2. To use the Kaggle API, sign up for a Kaggle account at https://www.kaggle.com. Then go to the 'Account' tab of your user profile (https://www.kaggle.com/account) and select 'Create API Token'. This will trigger the download of kaggle.json, a file containing your API credentials.  
+Create a file named `secrets.json` inside the cloned repo. Add your kaggle username and APIKEY to in the format prescribed in `secrets.json.example` file.
   
-To start the server, run
+    
+3. To start the server, run
 ```
 npm start
 ```
+
+
 
 
 ## Platforms supported
