@@ -41,7 +41,7 @@ const atcoder = () => {
         const name = details.eq(1).find('a').text();
         const startTime = calcStartTimeUTC(details.eq(0).find('a').text());
         const duration = parseDuration(details.eq(2).text());
-        const url = details.eq(1).find('a').attr('href');
+        const url = "https://atcoder.jp" + details.eq(1).find('a').attr('href');
 
         return {
           name,
