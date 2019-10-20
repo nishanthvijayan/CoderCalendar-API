@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { parserErrorHandler } = require('./../utils');
 
-const PLATFORM = 'CODINGNINJAS';
+const PLATFORM = 'codingninjas';
 const CODINGNINJAS_API_URL = 'https://codingninjas.in/api/v3/events';
 const CODINGNINJAS_URL = 'https://www.codingninjas.in/';
 
