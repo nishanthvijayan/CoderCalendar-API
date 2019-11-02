@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/nishanthvijayan/programming-contests-api#readme",
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.19.0",
     "cheerio": "^1.0.0-rc.2",
     "cron": "^1.4.0",
     "memory-cache": "^0.2.0"
