@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "An API listing programming contests across multiple platforms",
   "main": "index.js",
-  "scripts": {
-    "start": "node src/app.js",
-    "test": "mocha --timeout 30000"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nishanthvijayan/programming-contests-api.git"
@@ -18,14 +15,11 @@
   },
   "homepage": "https://github.com/nishanthvijayan/programming-contests-api#readme",
   "dependencies": {
+    "aws-sdk": "^2.809.0",
     "axios": "^0.19.0",
-    "cheerio": "^1.0.0-rc.2",
-    "cron": "^1.4.0",
-    "memory-cache": "^0.2.0"
+    "cheerio": "^1.0.0-rc.2"
   },
   "devDependencies": {
-    "chai": "^4.0.2",
-    "chai-http": "^3.0.0",
     "eslint": "^5.3.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
