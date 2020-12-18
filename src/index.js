@@ -44,16 +44,18 @@ exports.handler = async (event) => {
         const ongoingContests = contests.filter(isOngoing).sort(sortByEndTime);
         const upcomingContests = contests.filter(isUpcoming).sort(sortByStartTime);
 
-        const contestsJson = JSON.stringify({
-          timestamp: curTime,
-          ongoing: ongoingContests,
-          upcoming: upcomingContests,
+        const resultsJson = JSON.stringify({
+          results: {
+            timestamp: curTime,
+            ongoing: ongoingContests,
+            upcoming: upcomingContests,
+          }
         });
 
         const params = {
             Bucket: "codercalendar-api",
             Key: "response.json",
-            Body: contestsJson,
+            Body: resultsJson,
             ContentType: "application/json;charset=UTF-8",
             ACL: 'public-read'
         };
