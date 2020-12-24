@@ -12,6 +12,7 @@ const atcoder = require('./parsers/atcoder');
 const csacademy = require('./parsers/csacademy');
 const coj = require('./parsers/coj');
 const kaggle = require('./parsers/kaggle');
+const codingninjas = require('./parsers/codingninjas');
 
 const runner = () => axios.all([
   codeforces(),
@@ -24,6 +25,7 @@ const runner = () => axios.all([
   csacademy(),
   coj(),
   kaggle(),
+  codingninjas(),
 ])
   .then((contestsByPlatform) => {
     const contests = flat(contestsByPlatform.filter(it => Array.isArray(it)));
