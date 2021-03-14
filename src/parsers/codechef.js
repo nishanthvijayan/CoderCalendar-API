@@ -19,17 +19,17 @@ const codechef = () => axios.get('http://www.codechef.com/contests', { timeout: 
   .then((response) => {
     const $ = cheerio.load(response.data);
     const statusdiv = $('table .dataTable');
-    const headings = $('h3');
-    const contestTables = { 'Future Contests': [], 'Present Contests': [] };
+    const headings = $('h2');
+    const contestTables = { 'Upcoming Coding Contests': [], 'Present Coding Contests': [] };
 
     for (let i = 0; i < headings.length; i++) {
-      if (headings.eq(i).text() !== 'Past Contests') {
+      if (headings.eq(i).text() !== 'Past Coding Contests') {
         contestTables[headings.eq(i).text()] = statusdiv.eq(i).find('tr').slice(1);
       }
     }
-    let contests = contestTables['Present Contests'].map((i, elem) => parseContestDetails($, elem)).get();
+    let contests = contestTables['Present Coding Contests'].map((i, elem) => parseContestDetails($, elem)).get();
 
-    contests = contests.concat(contestTables['Future Contests'].map((i, elem) => parseContestDetails($, elem)).get());
+    contests = contests.concat(contestTables['Upcoming Coding Contests'].map((i, elem) => parseContestDetails($, elem)).get());
 
     return contests;
   })
