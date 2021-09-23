@@ -13,6 +13,8 @@ const atcoder = require('./parsers/atcoder');
 const csacademy = require('./parsers/csacademy');
 const coj = require('./parsers/coj');
 const kaggle = require('./parsers/kaggle');
+const interviewbit = require('./parsers/interviewbit');
+
 
 const s3bucket = new AWS.S3({});
 
@@ -29,6 +31,7 @@ exports.handler = async (event) => {
       csacademy(),
       coj(),
       kaggle(),
+      interviewbit(),
     ])
       .then((contestsByPlatform) => {
         const contests = flat(contestsByPlatform.filter(it => Array.isArray(it)));
