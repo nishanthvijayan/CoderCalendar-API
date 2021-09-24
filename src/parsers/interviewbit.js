@@ -26,10 +26,10 @@ const interviewbit = () => {
       var upcomingContestStartTimeElementSelector = '#upcoming_contests > div > div > div > div > div.col-xs-12.col-sm-8.col-md-8.card-detail > div > div > div > div.info-value';
       var upcomingContestsStartTime = [];
       $(upcomingContestStartTimeElementSelector).each((parentIdx, parentElem) => {
-        startTime = $(parentElem).text().trim().slice(0, 11);
+        startTime = $(parentElem).text().trim().slice(0, -4);
         upcomingContestsStartTime.push(startTime);
       })
-      var upcomingContestEndTimeAndDuration = []
+      var upcomingContestEndTime = []
       for (let i = 0; i < upcomingContestsLink.length; i++) {
         var url = upcomingContestsLink[i][0]
         var config = {
@@ -42,23 +42,42 @@ const interviewbit = () => {
         var response = await axios.get(url, config);
         var $ = cheerio.load(response.data);
         var upcominContestEndTimeElementSelector = '#hackathon-details-div > div:nth-child(2) > span.details-wrapper > span.info-value';
-        var upcominContestDurationElementSelector = '#hackathon-details-div > div:nth-child(3) > span.details-wrapper > span.info-value';
-        var endTime = $(upcominContestEndTimeElementSelector).first().text().trim().slice(0, 11);
-        var duration = $(upcominContestDurationElementSelector).first().text().trim();
-        var endTimeAndDurationDetails = [endTime, duration];
-        upcomingContestEndTimeAndDuration.push(endTimeAndDurationDetails)
+        var endTime = $(upcominContestEndTimeElementSelector).first().text().trim().slice(0, -4);
+        upcomingContestEndTime.push(endTime)
       }
+
+      const calcTimeUTC = (datetimeString) => {
+        var fiveThirtyInSeconds = (5*60 + 30)*60
+        function checkNull(val) {
+          if (val != null){
+            return val
+          };
+        }
+        var datetimeList = datetimeString.split(" ").filter(checkNull);
+        var year = datetimeList[2];
+        var day = datetimeList[0];
+        var hour = datetimeList[3].split(":")[0];
+        if (datetimeList[4] == "PM"){
+          hour = parseInt(hour) + 12
+          hour = hour.toString()
+        }; 
+        var minute = datetimeList[3].split(":")[1];
+        var parseMonth = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12};
+        var month = parseMonth[datetimeList[1]].toString();
+      
+        // Date provided by atcoder follows Tokyo timezone(GMT+09:00)
+        return new Date(Date.UTC(year, month, day, hour, minute)).getTime() / 1000 - fiveThirtyInSeconds;
+      };
+
       upcomingList = []
       for (let i = 0; i < upcomingContestsLink.length; i++) {
           addDict = {};
-          addDict["Name"] = upcomingContestsLink[i][1]
-          addDict["Platform"] = "Interview Bit"
-          addDict["challenge_type"] = "Contest"
-          addDict["url"] = upcomingContestsLink[i][0]
-          addDict["start_time"] = upcomingContestsStartTime[i]
-          addDict["end_time"] = upcomingContestEndTimeAndDuration[i][0]
-          addDict["duration"] = upcomingContestEndTimeAndDuration[i][1]
-          upcomingList.push(addDict)
+          addDict["name"] = upcomingContestsLink[i][1];
+          addDict["platform"] = "Interview Bit";
+          addDict["url"] = upcomingContestsLink[i][0];
+          addDict["startTime"] = calcTimeUTC(upcomingContestsStartTime[i]);
+          addDict["endTime"] = calcTimeUTC(upcomingContestEndTime[i]);
+          upcomingList.push(addDict);
       }
       var activeContestLinkElementSelector = '#active_contests > div > div > div > div > div.col-xs-12.col-sm-8.col-md-8.card-detail > div > div > a';
       var activeContestsLink = [];
@@ -67,6 +86,12 @@ const interviewbit = () => {
           var name = $(parentElem).text().trim();
           nameAndLink = [actualLink, name];
           activeContestsLink.push(nameAndLink);
+      })
+      var activeContestStartTimeElementSelector = '#active_contests > div > div > div > div > div.col-xs-12.col-sm-8.col-md-8.card-detail > div > div > div > div.info-value';
+      var activeContestsStartTime = [];
+      $(activeContestStartTimeElementSelector).each((parentIdx, parentElem) => {
+        startTime = $(parentElem).text().trim().slice(0, 11);
+        activeContestsStartTime.push(startTime);
       })
       var activeContestEndTimeElementSelector = '#active_contests > div > div > div > div > div.col-xs-12.col-sm-8.col-md-8.card-detail > div > div > div > div.info-value';
       var activeContestsEndTime = [];
@@ -77,12 +102,12 @@ const interviewbit = () => {
       activeList = []
       for (let i = 0; i < activeContestsLink.length; i++) {
           addDict = {};
-          addDict["Name"] = activeContestsLink[i][1]
-          addDict["Platform"] = "Interview Bit"
-          addDict["challenge_type"] = "Contest"
-          addDict["url"] = activeContestsLink[i][0]
-          addDict["end_time"] = activeContestsEndTime[i]
-          activeList.push(addDict)
+          addDict["name"] = activeContestsLink[i][1];
+          addDict["platform"] = "Interview Bit";
+          addDict["url"] = activeContestsLink[i][0];
+          addDict["startTime"] = calcTimeUTC(activeContestsStartTime[i]);
+          addDict["endTime"] = calcTimeUTC(activeContestsEndTime[i]);
+          activeList.push(addDict);
       }
       finalContestList = upcomingList.concat(activeList);
       return finalContestList
