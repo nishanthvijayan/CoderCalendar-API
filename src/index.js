@@ -13,9 +13,9 @@ const atcoder = require('./parsers/atcoder');
 const csacademy = require('./parsers/csacademy');
 const coj = require('./parsers/coj');
 const kaggle = require('./parsers/kaggle');
+const interviewbit = require('./parsers/interviewbit');
 
 const s3bucket = new AWS.S3({});
-
 
 exports.handler = async (event) => {
     return axios.all([
@@ -29,6 +29,7 @@ exports.handler = async (event) => {
       csacademy(),
       coj(),
       kaggle(),
+      interviewbit(),
     ])
       .then((contestsByPlatform) => {
         const contests = flat(contestsByPlatform.filter(it => Array.isArray(it)));
@@ -59,11 +60,8 @@ exports.handler = async (event) => {
             ContentType: "application/json;charset=UTF-8",
             ACL: 'public-read'
         };
-
         return s3bucket.upload(params).promise().then((data) => {
             console.log(`File uploaded successfully at ${data.Location}`)
         });
       });
 };
-
-
